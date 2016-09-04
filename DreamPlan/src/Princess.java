@@ -1,31 +1,8 @@
 import java.util.HashMap;
 
-interface StatIdx {
-	public static final int NAME = 0;
-	public static final int AGE = 1;
-	public static final int FATIGUE = 2;
-	public static final int INTELLECT = 3;
-	public static final int WET = 4;
-	public static final int VISION = 5;
-	public static final int STRENGTH = 6;
-	public static final int HAIRLENGTH = 7;
-	public static final int SKINCOLOR = 8;
-	public static final int HEIGHT = 9;
-	public static final int BEAUTY = 10;
-	public static final int FEEL = 11;
-}
+import Idxs.ActionIdx;
+import Idxs.StatIdx;
 
-interface ActionIdx {
-	public static final int DAYEND = 0;
-	public static final int WALK = 1;
-	public static final int RICE = 2;
-	public static final int NAP = 3;
-	public static final int HEALTH = 4;
-	public static final int PCROOM = 5;
-	public static final int SALON = 6;
-	public static final int SHOWER = 7;
-	public static final int READING = 8;
-}
 
 public class Princess implements StatIdx, ActionIdx{
 	
@@ -53,7 +30,14 @@ public class Princess implements StatIdx, ActionIdx{
 		"PC방 가기", 
 		"미용실 가기", 
 		"샤워 하기", 
-		"독서실 가기"
+		"독서실 가기",
+	};
+	
+	String[]	skinColorList	= {
+		"살색",
+		"백인",
+		"황인",
+		"흑인",
 	};
 
 	public Princess() {
@@ -70,9 +54,17 @@ public class Princess implements StatIdx, ActionIdx{
 	}
 
 	public String getActionNameList(){
+		return arrMerge(actionList);
+	}
+	
+	public String getSkinColorNameList(){
+		return arrMerge(skinColorList);
+	}
+	
+	private String arrMerge(String[] arr){
 		String nameList = "";
-		for (int i = 1; i < actionList.length; i++)
-			nameList += i + "." + actionList[i] + " ";
+		for (int i = 1; i < arr.length; i++)
+			nameList += i + "." + arr[i] + " ";
 		return nameList;
 	}
 	
@@ -115,6 +107,13 @@ public class Princess implements StatIdx, ActionIdx{
 	}
 	
 	public void setStat(int idx, String statData) {
+		
+		switch (idx) {
+			case SKINCOLOR :
+				statData = (Main.isNum(statData)) ? skinColorList[Integer.parseInt(statData)] : statData;
+			break;
+		}
+		
 		statList[idx][1] = statData;
 		System.out.println(statList[idx][0] + " 지정 => " + statList[idx][1]);
 		sleeper();
@@ -128,6 +127,10 @@ public class Princess implements StatIdx, ActionIdx{
 			case INTELLECT : // 10 ~ 100
 			case STRENGTH :
 				min = 10; max = 100;
+			break;
+			
+			case WET :
+				min = 3; max = 300;
 			break;
 			
 			case VISION : // -2.5 ~ 2.5
@@ -147,66 +150,93 @@ public class Princess implements StatIdx, ActionIdx{
 	}
 		
 	public void startAction(int idx) {
+		System.out.println("시작합니다 : " + actionList[idx]);
+		String startMsg = "";
+		String endMsg = "";
 		switch (idx) {
 			case DAYEND :
-				System.out.println();
-				System.out.println("오늘 하루도 수고하셨습니다.");
+				startMsgPrint("잘자요!");
 				addStat(FATIGUE, -50);
 				addStat(BEAUTY, +3);
 				addStat(FEEL, +20);
+				endMsg = "잘잤다!";
 			break;
 						
 			case WALK :
+				startMsgPrint("나가야지!");
 				addStat(FATIGUE, +20);
 				addStat(WET, -1);
 				addStat(STRENGTH, +2);
 				addStat(BEAUTY, +1);
 				addStat(FEEL, 10);
+				endMsgPrint("다녀왔습니다!");
 			break;
 			
 			case RICE :
+				startMsgPrint("냠냠");
 				addStat(FATIGUE, +10);
 				addStat(WET, +2);
 				addStat(STRENGTH, +2);
 				addStat(BEAUTY, -1);
 				addStat(FEEL, +10);
+				endMsgPrint("배부르다..");
 			break;
 			
 			case NAP :
+				startMsgPrint("꾸벅..꾸벅..");
 				addStat(FATIGUE, -30);
 				addStat(BEAUTY, +2);
 				addStat(FEEL, +10);
+				endMsgPrint("음??");
 			break;
 				
 			case HEALTH :
+				startMsgPrint("헛둘헛둘");
 				addStat(FATIGUE, +40);
 				addStat(WET, -1);
 				addStat(STRENGTH, +5);
 				addStat(BEAUTY, +1);
 				addStat(FEEL, -5);
+				endMsgPrint("휴 덥다");
 			break;
 			
 			case PCROOM :
+				startMsgPrint("컴퓨터??");
 				addStat(FATIGUE, +30);
 				addStat(VISION, -0.05);
 				addStat(BEAUTY, -1);
+				endMsgPrint("왜 간거지?");
 			break;
 			
 			case SALON :
+				startMsgPrint("미용실!");
 				addStat(FATIGUE, -5);
 				addStat(BEAUTY, +2);
 				addStat(FEEL, +10);
+				endMsgPrint("나 이뻐요??");
 			break;
 			
 			case SHOWER :
+				startMsgPrint("(쏴아아아)");
 				addStat(FATIGUE, -10);
 				addStat(BEAUTY, +1);
+				endMsgPrint("(나른해)");
 			break;
 			
 			case READING :
+				startMsgPrint("쉬잇!");
 				addStat(FATIGUE, -10);
 				addStat(VISION, -0.05);
+				endMsgPrint("책이 좋아!");
 			break;		
 		}
+	}
+	
+	public void startMsgPrint(String msg){
+		Ani.printTyping(msg, 100);
+	}
+	
+	public void endMsgPrint(String msg){
+		Ani.printTyping(msg, 100);
 	}
 }

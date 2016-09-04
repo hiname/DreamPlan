@@ -2,6 +2,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import Idxs.ActionIdx;
+import Idxs.StatIdx;
+
 public class Main {
 	public static void main(String[] args) {
 		new Main().main2();
@@ -18,14 +21,14 @@ public class Main {
 		
 		boolean isLoad = false;
 		if(new File(savePath).exists()) {
-			System.out.print("딸이 존재합니다. 불러올까요? 1.ㅇㅇ 2.ㄴㄴ");
+			System.out.println("딸이 존재합니다. 불러올까요? 1.ㅇㅇ 2.ㄴㄴ");
 			isLoad = (sc.nextInt() == 1) ? true : false;
 		}
 		
 		if (isLoad) {
 			HashMap<String, String> map = FileMgr.toMap(FileMgr.loadText(savePath));
 			System.out.println("딸을 불러오고 있습니다.");
-			Ani.printTyping(".-'.-'.-'.-'.-'.-'.-'", 350);
+			Ani.printTyping("↓↙←←←", 500);
 			System.out.println();
 			prin = new Princess(map);
 			prin.printStatAll();
@@ -67,8 +70,6 @@ public class Main {
 	}
 	
 	public void openning(){
-		// Ani.printTyping("딸을 잘 키워서 결혼 시키는 게임입니다.");
-		// sleep(1000);
 		Ani.printTyping(". . . . . . ", 500);
 		Ani.printTyping(". . . . ", 250);
 		Ani.printTyping(". . . . . (똑 똑 똑)", 250);
@@ -88,19 +89,20 @@ public class Main {
 		Ani.printTyping("(응애↘ 응애→ 응애☆★○●◎)", 150);
 		Ani.printTyping("(아 이게 자다말고 뭐하는 짓이여;;)", 150);
 		Ani.printTyping("(소리가 나는 곳에는 바구니가 있었고 그 안에는 아이가 한명 있었다.)", 250);
-		Ani.printTyping("(그래.. 맞아..)");
+		Ani.printTyping("(어.. 이 아이는..)");
+		Ani.printTyping("회상 > > >");
 	}
 	
-	public void firstUser(Princess princess){
+	public void firstUser(Princess prin){
 		// 전체적인 게임스토리 : 딸아이를 키워 결혼까지 시키기 엔딩크레딧-
 		System.out.println("오프닝을 보시겠습니까? 1.ㅇㅇ 2.ㄴㄴ");
 		if (sc.nextInt() == 1) openning();
-		Ani.printTyping("결혼을 하고 1년 뒤 딸 아이를 낳았다.\n난 꼭 이 아이를 잘 키워볼 것이야!");
+		Ani.printTyping("우리는 대학교 cc로 만나 5년간의 연애 끝에 결혼을 하고 예쁜 딸 아이를 낳았다.\n난 꼭 이 아이를 잘 키워볼 것이야!");
 		sleep(1000);
 		System.out.print("아이의 이름이 뭔가요? ");
-		princess.setStat(StatIdx.NAME, sc.next());
-		System.out.print("아이의 피부는 어떤색 인가요? ");
-		princess.setStat(StatIdx.SKINCOLOR, sc.next());
+		prin.setStat(StatIdx.NAME, sc.next());
+		System.out.print("아이의 피부는 어떤색 인가요? " + prin.getSkinColorNameList());
+		prin.setStat(StatIdx.SKINCOLOR, sc.next());
 		int tmpCount = (int) (Math.random() * 5) + 3;
 		while (tmpCount-- > 0) {
 			System.out.print(". ");
@@ -110,11 +112,14 @@ public class Main {
 		sleep(1500);
 		System.out.println("딸이 태어났습니다!");
 		sleep(1000);
-		princess.printStatAll();
+		prin.printStatAll();
 	}
 
 	public void sleep(long millis) {
 		try { Thread.sleep(millis); } catch (InterruptedException e) { e.printStackTrace(); }
 	}
 
+	public static boolean isNum(String str){
+		return str.matches("[+-]?\\d*(\\.\\d+)?");
+	}
 }

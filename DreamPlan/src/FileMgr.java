@@ -12,17 +12,6 @@ public class FileMgr {
 	static final boolean	DEFAULT_APPEND	= false;
 	static final String	DEFAULT_ENC		= "UTF-8";
 
-	public static void main(String[] args) {
-		new FileMgr().main2();
-	}
-
-	public static void main2() {
-		String path = "c:/temp/temp.txt";
-		String loadTextLines[] = loadText(path);
-		loadTextLines[1] = "abc";
-		saveText(path, loadTextLines);
-	}
-
 	public static HashMap<String, String> toMap(String data){
 		String spliter = "\n";
 		if (data.contains("\r\n")) spliter = "\r\n";
