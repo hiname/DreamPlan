@@ -13,9 +13,17 @@ public class Main {
 	public static final String saveDir = "./save";
 	public static final String savePath = saveDir + "/save.txt";
 	public static final Scanner sc = new Scanner(System.in);
+	public static int nowTime = 8;
+	public static int day = 1;
+	public static Princess prin = null;
+	public static boolean afterDay = false;
+	public static int addDay = 0;
+	public static final String nowTimeKey = "현재시간";
+	public static final String dayKey = "현재날짜";
+	public static boolean sleepWait = false;
 	
 	public void main2() {
-		Princess prin = null;
+		
 		File saveDirPath = new File(saveDir);
 		if(!saveDirPath.exists()) saveDirPath.mkdirs();
 		
@@ -26,47 +34,88 @@ public class Main {
 		}
 		
 		if (isLoad) {
-			HashMap<String, String> map = FileMgr.toMap(FileMgr.loadText(savePath));
-			System.out.println("딸을 불러오고 있습니다.");
-			Ani.printTyping("↓↙←←←", 500);
-			System.out.println();
-			prin = new Princess(map);
-			prin.printStatAll();
-			System.out.println();
-			sleep(3000);
+			load();
 		} else {
 			prin = new Princess();
 			firstUser(prin);
 		}
 		
-		int count = 1;
+		int count = 0;
 		while(true){
-			System.out.println(count + "번째 동작");
-			System.out.println("무엇을 하시겠습니까?");
+			count++;
+			System.out.println("\n= = = " + day + "일째 = = =");
 			
-			System.out.println(prin.getActionNameList());
-			int select = Integer.parseInt(sc.next());
-			if (select > 0) {
-				prin.startAction(select);
-				sleep(1000);
-			}
+			int selectIdx = -1;
+			String selectAction = "";
 			
-			if(select == 0 || count++ >= 4 || prin.getStatDbl(StatIdx.FATIGUE) >= 70) {
-				count = 1;
-				System.out.println("일정이 끝났습니다.");
-				sleep(2000);
-				prin.startAction(ActionIdx.DAYEND);
-				System.out.println("딸의 정보를 저장 중 입니다.");
-				sleep(1500);
-				FileMgr.saveText(savePath, prin.getSaveData());
+			if (sleepWait) { // 강제 하루 종료
+				selectAction = prin.getActionName(ActionIdx.DAYEND);
+				sleepWait = false;
+			} else if (prin.getStatDbl(StatIdx.FATIGUE) >= 100) { // 강제 낮잠
+				selectAction = prin.getActionName(ActionIdx.NAP);
+			} else { // 사용자 선택
+				System.out.println(count + "번째 동작. 무엇을 할까요?");
+				String listActions = prin.getActionNameList();
+				System.out.println(listActions);
+				selectIdx = Integer.parseInt(sc.next());
+				selectAction = listActions.split(", ")[selectIdx - 1];
+				selectAction = selectAction.substring(selectAction.indexOf(".") + 1);
 			}
+
+			prin.startAction(selectAction);
+			sleep(1000);
 			System.out.println();
+			
+			if (afterDay) {
+				nextDay();
+				save();
+				afterDay = false;
+				count = 0;
+			}
 		}
 		
 		// System.out.println();
 		// princess.printStatAll();
 		
 		// sc.close();
+	}
+	
+	public static void nextDay(){
+		day += addDay;
+		if (addDay == 1)
+			Ani.printTyping("하루가 지났습니다.");
+		else
+			Ani.printTyping(addDay + "일이 지났습니다.");
+		
+		prin.addStat(StatIdx.HAIRLENGTH, +2);
+		prin.addStat(StatIdx.HEIGHT, +0.8);
+
+	}
+	
+	public static void save(){
+		System.out.println("딸의 정보를 저장 중 입니다.");
+		sleep(1500);
+		FileMgr.saveText(
+				savePath, prin.getSaveData() 
+				+ nowTimeKey + " : " + nowTime + "\r\n"
+				+ dayKey + " : " + day + "\r\n" 
+				);
+	}
+	
+	public static void load(){
+		HashMap<String, String> map = FileMgr.toMap(FileMgr.loadText(savePath));
+		System.out.println("딸을 불러오고 있습니다.");
+		Ani.printTyping("↓↙←←←", 250);
+		System.out.println();
+		prin = new Princess(map);
+		prin.printStatAll();
+		
+		nowTime = Integer.parseInt(map.get(nowTimeKey));
+		System.out.println(nowTimeKey + " " + nowTime + "시");
+		
+		day = Integer.parseInt(map.get(dayKey));
+		
+		sleep(3000);
 	}
 	
 	public void openning(){
@@ -97,7 +146,7 @@ public class Main {
 		// 전체적인 게임스토리 : 딸아이를 키워 결혼까지 시키기 엔딩크레딧-
 		System.out.println("오프닝을 보시겠습니까? 1.ㅇㅇ 2.ㄴㄴ");
 		if (sc.nextInt() == 1) openning();
-		Ani.printTyping("우리는 대학교 cc로 만나 5년간의 연애 끝에 결혼을 하고 예쁜 딸 아이를 낳았다.\n난 꼭 이 아이를 잘 키워볼 것이야!");
+		Ani.printTyping("우리는 대학교 cc로 만나 5년간의 연애 끝에\n결혼을 하고 예쁜 딸 아이를 낳고 부인은 생을마감했다.\n나에게 남겨진 딸 아이.. 난 꼭 이 아이를 잘 키워볼 것이야!!");
 		sleep(1000);
 		System.out.print("아이의 이름이 뭔가요? ");
 		prin.setStat(StatIdx.NAME, sc.next());
@@ -113,13 +162,45 @@ public class Main {
 		System.out.println("딸이 태어났습니다!");
 		sleep(1000);
 		prin.printStatAll();
+		
+		/*
+		 * -배우자선택확률
+			등교횟수가 몇 회 이상이면 선생님
+			지능값이 높으면 교수님
+			몸무게가 높으면 샐러리맨
+			근력이 높으면 운동선수
+			미모가 높으면 재벌2세
+			미모가 낮으면 결혼에 실패
+			몸무게가 낮으면 펀드매니져
+			지능값이 낮으면 공사장인부
+		*/
 	}
 
-	public void sleep(long millis) {
+	public static void timePass(int time) {
+		nowTime += time;
+		
+		if (nowTime >= 22) sleepWait = true;
+		
+		int addDay = nowTime / 24;
+		if (addDay > 0) { 
+			afterDay = true;
+			Main.addDay = addDay;
+		}
+		nowTime %= 24;
+		
+		Ani.printTyping(time + "시간이 지났습니다.");
+		Ani.printTyping("현재시간 " + nowTime + "시");
+	}
+	
+	public static void sleep(long millis) {
 		try { Thread.sleep(millis); } catch (InterruptedException e) { e.printStackTrace(); }
 	}
 
 	public static boolean isNum(String str){
 		return str.matches("[+-]?\\d*(\\.\\d+)?");
+	}
+
+	public static double round2(double value){
+		return (int)(value * 100) / 100.0d;
 	}
 }

@@ -9,4 +9,7 @@ public interface ActionIdx{
 	public static final int	SALON	= 6;
 	public static final int	SHOWER	= 7;
 	public static final int	READING	= 8;
+	public static final int	SCHOOL	= 9;
+	public static final int	ACADEMY	= 10;
+	public static final int	ALCOHOL	= 11;
 }
