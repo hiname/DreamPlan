@@ -120,7 +120,7 @@ public class Princess implements StatIdx, ActionIdx{
 	}
 	
 	public void addStat(int idx, double value) {
-		double sumData = Double.parseDouble(statList[idx][1]) + value;
+		double originValue = Double.parseDouble(statList[idx][1]);
 		double min = 0, max = 100;
 		String print = "";
 		switch (idx) {
@@ -138,12 +138,18 @@ public class Princess implements StatIdx, ActionIdx{
 			break;
 		}
 		
-		if (sumData < min) sumData = min;
-		else if (sumData > max) sumData = max;
+		double sumValue = originValue + value;
 		
-		statList[idx][1] = String.valueOf(sumData);
+		if (sumValue < min) sumValue = min;
+		else if (sumValue > max) sumValue = max;
 		
-		if (print.equals("")) print = statList[idx][0] + " 변화(" + value + ") => " + statList[idx][1];
+		double diffValue = sumValue - originValue;
+		String diffPrint = ((diffValue > 0) ? "+" : "") + diffValue;
+		
+		statList[idx][1] = String.valueOf(sumValue);
+		
+		if (print.equals("")) 
+			print = statList[idx][0] + " 변화(" + diffPrint + ") => " + statList[idx][1];
 		
 		System.out.println(print);
 		sleeper();
