@@ -19,7 +19,6 @@ public class Princess implements StatIdx, ActionIdx{
 		{ "키", "50"},
 		{ "미모", "0"},
 		{ "기분", "0"},
-		{ "포만감", "0"},
 	};
 	
 	String[][]	actionList	= { 
@@ -65,8 +64,8 @@ public class Princess implements StatIdx, ActionIdx{
 	public String getActionNameList(){
 		String nameList = "";
 		int returnIdx = 1;
-		int myAge = Integer.parseInt(statList[StatIdx.AGE][1]);
-		int nowTime = Main.nowTime;
+		double myAge = Double.parseDouble(statList[StatIdx.AGE][1]);
+		double nowTime = Main.nowTime;
 		for (int i = 1; i < actionList.length; i++) {
 			int actionAgeMin = Integer.parseInt(actionList[i][1]);
 			int actionAgeMax = Integer.parseInt(actionList[i][2]);
@@ -124,11 +123,8 @@ public class Princess implements StatIdx, ActionIdx{
 	}
 	
 	public void sleeper(){
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		if(!Main.skipMode)
+			try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 	}
 	
 	public void setStat(int idx, String statData) {
@@ -159,7 +155,7 @@ public class Princess implements StatIdx, ActionIdx{
 				min = 3; max = 300;
 			break;
 			
-			case VISION : // -2.5 ~ 2.5
+			case VISION : // -3.0 ~ 3.0
 				min = -3.0; max = +3.0;
 			break;
 		}
@@ -202,7 +198,7 @@ public class Princess implements StatIdx, ActionIdx{
 		switch (idx) {
 			case DAYEND :
 				startMsgPrint("잘자요!");
-				addStat(FATIGUE, -Integer.parseInt(statList[FATIGUE][1]));
+				addStat(FATIGUE, -Double.parseDouble(statList[FATIGUE][1]));
 				addStat(BEAUTY, +3);
 				addStat(FEEL, +20);
 				timePass(10);

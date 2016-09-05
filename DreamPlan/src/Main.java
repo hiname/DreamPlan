@@ -21,15 +21,18 @@ public class Main {
 	public static final String nowTimeKey = "현재시간";
 	public static final String dayKey = "현재날짜";
 	public static boolean sleepWait = false;
+	public static boolean skipMode = false;
 	
 	public void main2() {
+		System.out.println("스킵 모드 활성화? 1.네 2.아니오");
+		skipMode = (sc.nextInt() == 1) ? true : false;
 		
 		File saveDirPath = new File(saveDir);
 		if(!saveDirPath.exists()) saveDirPath.mkdirs();
 		
 		boolean isLoad = false;
 		if(new File(savePath).exists()) {
-			System.out.println("딸이 존재합니다. 불러올까요? 1.ㅇㅇ 2.ㄴㄴ");
+			System.out.println("딸이 존재합니다. 불러올까요? 1.네 2.아니오");
 			isLoad = (sc.nextInt() == 1) ? true : false;
 		}
 		
@@ -145,7 +148,7 @@ public class Main {
 	
 	public void firstUser(Princess prin){
 		// 전체적인 게임스토리 : 딸아이를 키워 결혼까지 시키기 엔딩크레딧-
-		System.out.println("오프닝을 보시겠습니까? 1.ㅇㅇ 2.ㄴㄴ");
+		System.out.println("오프닝을 보시겠습니까? 1.네 2.아니오");
 		if (sc.nextInt() == 1) openning();
 		Ani.printTyping("우리는 대학교 cc로 만나 5년간의 연애 끝에\n결혼을 하고 예쁜 딸 아이를 낳고 부인은 생을마감했다.\n나에게 남겨진 딸 아이.. 난 꼭 이 아이를 잘 키워볼 것이야!!");
 		sleep(1000);
@@ -194,7 +197,8 @@ public class Main {
 	}
 	
 	public static void sleep(long millis) {
-		try { Thread.sleep(millis); } catch (InterruptedException e) { e.printStackTrace(); }
+		if(!Main.skipMode)
+			try { Thread.sleep(millis); } catch (InterruptedException e) { e.printStackTrace(); }
 	}
 
 	public static boolean isNum(String str){
