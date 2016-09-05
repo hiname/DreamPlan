@@ -174,6 +174,7 @@ public class Princess implements StatIdx, ActionIdx{
 		if (print.equals("")) 
 			print = statList[idx][0] + " 변화(" + diffPrint + ") => " + statList[idx][1];
 		
+		if (diffValue != 0.0)
 		System.out.println(print);
 		sleeper();
 	}

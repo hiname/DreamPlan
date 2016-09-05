@@ -46,10 +46,12 @@ public class Main {
 		int count = 0;
 		while(true){
 			count++;
-			System.out.println("\n= = = " + day + "일째 = = =");
+			System.out.println("\n◎ 현재 " + nowTime + "시 ◎ ♠ 나이 " + prin.getStatStr(StatIdx.AGE) + "살 ♠ ▶ " + day + "일 ◀");
 			
 			int selectIdx = -1;
 			String selectAction = "";
+			
+			if (nowTime >= 22) sleepWait = true;
 			
 			if (sleepWait) { // 강제 하루 종료
 				selectAction = prin.getActionName(ActionIdx.DAYEND);
@@ -93,7 +95,7 @@ public class Main {
 		prin.addStat(StatIdx.HAIRLENGTH, +2);
 		prin.addStat(StatIdx.HEIGHT, +0.8);
 		prin.addStat(StatIdx.WET, +2);
-		prin.setStat(StatIdx.AGE, Double.toString((day / 7.0) + 1.0)); 
+		prin.setStat(StatIdx.AGE, String.valueOf((int)((day / 7.0) + 1.0))); 
 	}
 	
 	public static void save(){
@@ -183,8 +185,6 @@ public class Main {
 	public static void timePass(int time) {
 		nowTime += time;
 		
-		if (nowTime >= 22) sleepWait = true;
-		
 		int addDay = nowTime / 24;
 		if (addDay > 0) { 
 			afterDay = true;
@@ -193,7 +193,6 @@ public class Main {
 		nowTime %= 24;
 		
 		Ani.printTyping(time + "시간이 지났습니다.");
-		Ani.printTyping("현재시간 " + nowTime + "시");
 	}
 	
 	public static void sleep(long millis) {
