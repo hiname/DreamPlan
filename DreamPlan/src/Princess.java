@@ -159,6 +159,10 @@ public class Princess implements StatIdx, ActionIdx{
 			case VISION : // -3.0 ~ 3.0
 				min = -3.0; max = +3.0;
 			break;
+			
+			case HEIGHT :
+				min = 50; max = 164;
+			break;
 		}
 		
 		double sumValue = originValue + value;

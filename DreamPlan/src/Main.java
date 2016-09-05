@@ -51,7 +51,7 @@ public class Main {
 			int selectIdx = -1;
 			String selectAction = "";
 			
-			if (nowTime >= 22) sleepWait = true;
+			if (22 <= nowTime || nowTime <= 8) sleepWait = true;
 			
 			if (sleepWait) { // 강제 하루 종료
 				selectAction = prin.getActionName(ActionIdx.DAYEND);
@@ -93,7 +93,7 @@ public class Main {
 			Ani.printTyping(addDay + "일이 지났습니다.");
 		
 		prin.addStat(StatIdx.HAIRLENGTH, +2);
-		prin.addStat(StatIdx.HEIGHT, +0.8);
+		prin.addStat(StatIdx.HEIGHT, +1.08);
 		prin.addStat(StatIdx.WET, +2);
 		prin.setStat(StatIdx.AGE, String.valueOf((int)((day / 7.0) + 1.0))); 
 	}
