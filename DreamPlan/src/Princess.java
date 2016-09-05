@@ -19,6 +19,7 @@ public class Princess implements StatIdx, ActionIdx{
 		{ "키", "50"},
 		{ "미모", "0"},
 		{ "기분", "0"},
+		{ "포만감", "0"},
 	};
 	
 	String[][]	actionList	= { 

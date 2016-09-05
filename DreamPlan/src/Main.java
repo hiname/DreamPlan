@@ -89,7 +89,8 @@ public class Main {
 		
 		prin.addStat(StatIdx.HAIRLENGTH, +2);
 		prin.addStat(StatIdx.HEIGHT, +0.8);
-
+		prin.addStat(StatIdx.WET, +2);
+		prin.setStat(StatIdx.AGE, Double.toString((day / 7.0) + 1.0)); 
 	}
 	
 	public static void save(){
