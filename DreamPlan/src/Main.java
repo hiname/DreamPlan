@@ -211,9 +211,6 @@ public class Main {
 	}
 
 	public static double round2(double value){
-		if (value > 0) value += 0.005;
-		else value -= 0.005;
-		
-		return (double)((int)(value * 100) / 100.0d);
+		return Math.round(value * 100d) / 100d;
 	}
 }

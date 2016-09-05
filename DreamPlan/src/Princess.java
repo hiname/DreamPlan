@@ -1,43 +1,12 @@
 import java.util.HashMap;
 
 import Idxs.ActionIdx;
+import Idxs.SentIdx;
 import Idxs.StatIdx;
 
 
-public class Princess implements StatIdx, ActionIdx{
-	
-	String[][] statList = {
-		{ "이름", "name"}, 
-		{ "나이", "1"},
-		{ "피로도", "0"}, 
-		{ "지능", "10"},
-		{ "몸무게", "3"}, 
-		{ "시력", "3.0"},
-		{ "근력", "10"},
-		{ "머리길이", "0"}, 
-		{ "피부색", "살색"}, 
-		{ "키", "50"},
-		{ "미모", "0"},
-		{ "기분", "0"},
-		{ "배부름", "0"},
-	};
-	
-	String[][]	actionList	= { 
-		{"수면", "0", "999", "0", "24"},
-		{"산책", "0", "999", "0", "24"},
-		{"밥 먹기", "0", "999", "0", "24"}, 
-		{"낮잠", "0", "999", "0", "24"},
-		{"헬스", "8", "999", "0", "24"},
-		{"PC방 가기", "8", "999", "0", "24"},
-		{"미용실 가기", "8", "999", "0", "24"},
-		{"샤워 하기", "0", "999", "0", "24"},
-		{"독서실 가기", "0", "999", "0", "24"},
-		{"등교", "8", "23", "8", "9"},
-		{"학원", "8", "23", "0", "24"},
-		{"술 담배", "17", "999", "0", "24"},
+public class Princess implements StatIdx, ActionIdx, SentIdx{
 		
-	};
-	
 	String[]	skinColorList	= {
 		"살색",
 		"백인",
@@ -159,8 +128,10 @@ public class Princess implements StatIdx, ActionIdx{
 			break;
 			
 			case VISION : // -3.0 ~ 3.0
-				int nerfPer = (int)(Math.random() * 10);
-				if (nerfPer < 2) value = 0.0; 
+				int dice = (int)(Math.random() * 10);
+				
+				if (value < 0 && dice < 2) value = 0.0;
+				
 				min = -3.0; max = 3.0;
 			break;
 			
@@ -206,17 +177,23 @@ public class Princess implements StatIdx, ActionIdx{
 	}
 	
 	public void startAction(int idx) {
-		System.out.println("시작합니다 : " + actionList[idx][0]);
-		String startMsg = "";
-		String endMsg = "";
+		
+		int rndFeel = (int)(Math.random() * getStatDbl(FEEL));
+		if (rndFeel < 20) { 
+			Ani.printTyping("▼ " + getStatStr(NAME) + "의 기분이 좋지 않습니다. ▼");
+			Ani.printTyping(SentMgr.getRebRndSent());
+			idx = ALCOHOL; 
+		}
+		
+		Ani.printTyping("...☞ " + actionList[idx][0], 500);
 		switch (idx) {
 			case DAYEND :
 				startMsgPrint("잘자요!");
-				addStat(FATIGUE, -Double.parseDouble(statList[FATIGUE][1]));
+				setStat(FATIGUE, "0");
 				addStat(BEAUTY, +3);
 				addStat(FEEL, +20);
 				timePass(10);
-				endMsg = "잘잤다!";
+				startMsgPrint("잘잤다!");
 			break;
 						
 			case WALK :
@@ -329,6 +306,17 @@ public class Princess implements StatIdx, ActionIdx{
 				endMsgPrint("중독되는 것 같다.");
 			break;
 			
+			case EYEREST :
+				startMsgPrint("좀 쉬어야지");
+				addStat(FATIGUE, -5);
+				addStat(BEAUTY, +1);
+				addStat(FEEL, +1);
+				addStat(VISION, +0.05);
+				addStat(BELLY, -2);
+				timePass(1);
+				endMsgPrint("드르렁..");
+			break;
+			
 		}
 	}
 	
@@ -338,6 +326,9 @@ public class Princess implements StatIdx, ActionIdx{
 	
 	public void endMsgPrint(String msg){
 		Ani.printTyping(msg, 100);
+		// 자신에 대한 평가?
+		// 범위적 출력. 예) 샤워,미용실 등에서는 몸매와 관련된 평가를 한다.
+		
 	}
 	
 	public void timePass(int time) {
