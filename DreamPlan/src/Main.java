@@ -10,6 +10,7 @@ public class Main {
 		new Main().main2();
 	}
 	
+	// public static final String saveDir = "../../save";
 	public static final String saveDir = "./save";
 	public static final String savePath = saveDir + "/save.txt";
 	public static final Scanner sc = new Scanner(System.in);
@@ -51,7 +52,7 @@ public class Main {
 			int selectIdx = -1;
 			String selectAction = "";
 			
-			if (22 <= nowTime || nowTime <= 8) sleepWait = true;
+			if (22 <= nowTime || nowTime <= 7) sleepWait = true;
 			
 			if (sleepWait) { // 강제 하루 종료
 				selectAction = prin.getActionName(ActionIdx.DAYEND);
@@ -100,9 +101,7 @@ public class Main {
 			int addAge = (int)((day / 7.0) + 1.0);
 			prin.setStat(StatIdx.AGE, String.valueOf(addAge));
 			prin.printStatAll();
-		}
-		
-		 
+		} 
 	}
 	
 	public static void save(){
@@ -212,6 +211,9 @@ public class Main {
 	}
 
 	public static double round2(double value){
-		return (int)(value * 100) / 100.0d;
+		if (value > 0) value += 0.005;
+		else value -= 0.005;
+		
+		return (double)((int)(value * 100) / 100.0d);
 	}
 }

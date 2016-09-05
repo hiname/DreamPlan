@@ -27,7 +27,7 @@ public class Princess implements StatIdx, ActionIdx{
 		{"산책", "0", "999", "0", "24"},
 		{"밥 먹기", "0", "999", "0", "24"}, 
 		{"낮잠", "0", "999", "0", "24"},
-		{"헬스", "0", "999", "0", "24"},
+		{"헬스", "8", "999", "0", "24"},
 		{"PC방 가기", "8", "999", "0", "24"},
 		{"미용실 가기", "8", "999", "0", "24"},
 		{"샤워 하기", "0", "999", "0", "24"},
@@ -143,7 +143,7 @@ public class Princess implements StatIdx, ActionIdx{
 	
 	public void addStat(int idx, double value) {
 		
-		double originValue = Main.round2(Double.parseDouble(statList[idx][1]));
+		double originValue = Double.parseDouble(statList[idx][1]);
 		double min = 0, max = 100;
 		String print = "";
 		String measure = "";
@@ -159,7 +159,9 @@ public class Princess implements StatIdx, ActionIdx{
 			break;
 			
 			case VISION : // -3.0 ~ 3.0
-				min = -3.0; max = +3.0;
+				int nerfPer = (int)(Math.random() * 10);
+				if (nerfPer < 2) value = 0.0; 
+				min = -3.0; max = 3.0;
 			break;
 			
 			case HEIGHT :
@@ -265,7 +267,7 @@ public class Princess implements StatIdx, ActionIdx{
 			case PCROOM :
 				startMsgPrint("옛썰! 지이잉~!");
 				addStat(FATIGUE, +40);
-				addStat(VISION, -0.03);
+				addStat(VISION, -0.01);
 				addStat(BEAUTY, -1);
 				addStat(FEEL, +20);
 				timePass(5);
@@ -293,7 +295,8 @@ public class Princess implements StatIdx, ActionIdx{
 			case READING :
 				startMsgPrint("독서중...");
 				addStat(FATIGUE, +20);
-				addStat(VISION, -0.05);
+				addStat(INTELLECT, +10);
+				addStat(VISION, -0.01);
 				timePass(5);
 				endMsgPrint("피곤해");
 			break;
