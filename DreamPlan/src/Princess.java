@@ -146,6 +146,7 @@ public class Princess implements StatIdx, ActionIdx{
 		double originValue = Main.round2(Double.parseDouble(statList[idx][1]));
 		double min = 0, max = 100;
 		String print = "";
+		String measure = "";
 		switch (idx) {
 			case INTELLECT : // 10 ~ 100
 			case STRENGTH :
@@ -154,6 +155,7 @@ public class Princess implements StatIdx, ActionIdx{
 			
 			case WET :
 				min = 3; max = 300;
+				measure = "kg";
 			break;
 			
 			case VISION : // -3.0 ~ 3.0
@@ -162,6 +164,11 @@ public class Princess implements StatIdx, ActionIdx{
 			
 			case HEIGHT :
 				min = 50; max = 164;
+				measure = "cm";
+			break;
+			
+			case HAIRLENGTH :
+				measure = "cm";
 			break;
 		}
 		
@@ -171,14 +178,13 @@ public class Princess implements StatIdx, ActionIdx{
 		else if (sumValue > max) sumValue = max;
 		
 		double diffValue = Main.round2(sumValue - originValue);
-		String diffPrint = ((diffValue > 0) ? "+" : "") + diffValue;
+		String diffPrint = ((diffValue > 0) ? "+" : "") + diffValue + measure;
 		
 		statList[idx][1] = String.valueOf(Main.round2(sumValue));
 		
 		if (print.equals("")) 
-			print = statList[idx][0] + " 변화(" + diffPrint + ") => " + statList[idx][1];
+			print = statList[idx][0] + " 변화(" + diffPrint + ") => " + statList[idx][1] + measure;
 		
-		if (diffValue != 0.0)
 		System.out.println(print);
 		sleeper();
 	}

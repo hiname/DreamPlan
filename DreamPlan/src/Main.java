@@ -95,7 +95,14 @@ public class Main {
 		prin.addStat(StatIdx.HAIRLENGTH, +2);
 		prin.addStat(StatIdx.HEIGHT, +1.08);
 		prin.addStat(StatIdx.WET, +2);
-		prin.setStat(StatIdx.AGE, String.valueOf((int)((day / 7.0) + 1.0))); 
+		
+		if ((int)((day % 7.0)) == 0) {
+			int addAge = (int)((day / 7.0) + 1.0);
+			prin.setStat(StatIdx.AGE, String.valueOf(addAge));
+			prin.printStatAll();
+		}
+		
+		 
 	}
 	
 	public static void save(){
