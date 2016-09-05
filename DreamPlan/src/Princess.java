@@ -19,6 +19,7 @@ public class Princess implements StatIdx, ActionIdx{
 		{ "키", "50"},
 		{ "미모", "0"},
 		{ "기분", "0"},
+		{ "배부름", "0"},
 	};
 	
 	String[][]	actionList	= { 
@@ -212,6 +213,7 @@ public class Princess implements StatIdx, ActionIdx{
 				addStat(STRENGTH, +2);
 				addStat(BEAUTY, +1);
 				addStat(FEEL, +10);
+				addStat(BELLY, -10);
 				timePass(3);
 				endMsgPrint("몸무게좀 빠졌나?");
 			break;
@@ -223,6 +225,7 @@ public class Princess implements StatIdx, ActionIdx{
 				addStat(STRENGTH, +2);
 				addStat(BEAUTY, -1);
 				addStat(FEEL, +10);
+				addStat(BELLY, +30);
 				timePass(1);
 				endMsgPrint("아.. 다이어트해야 되는데..");
 			break;
@@ -243,6 +246,7 @@ public class Princess implements StatIdx, ActionIdx{
 				addStat(STRENGTH, +5);
 				addStat(BEAUTY, +1);
 				addStat(FEEL, -5);
+				addStat(BELLY, -20);
 				timePass(1);
 				endMsgPrint("왜 이렇게 안빠지지");
 			break;

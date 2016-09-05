@@ -12,4 +12,5 @@ public interface StatIdx{
 	public static final int	HEIGHT		= 9;
 	public static final int	BEAUTY		= 10;
 	public static final int	FEEL		= 11;
+	public static final int 	BELLY		= 12;
 }
