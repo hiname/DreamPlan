@@ -25,7 +25,7 @@ public class Main {
 	public static boolean skipMode = false;
 	
 	public void main2() {
-		System.out.println("스킵 모드 활성화? 1.네 2.아니오");
+		System.out.println("스킵 모드를 활성화하시겠습니까? 1.네 2.아니오");
 		skipMode = (sc.nextInt() == 1) ? true : false;
 		
 		File saveDirPath = new File(saveDir);
@@ -33,7 +33,7 @@ public class Main {
 		
 		boolean isLoad = false;
 		if(new File(savePath).exists()) {
-			System.out.println("딸이 존재합니다. 불러올까요? 1.네 2.아니오");
+			System.out.println("딸 아이의 세이브파일이 존재합니다. 불러올까요? 1.네 2.아니오");
 			isLoad = (sc.nextInt() == 1) ? true : false;
 		}
 		
@@ -105,7 +105,7 @@ public class Main {
 	}
 	
 	public static void save(){
-		System.out.println("딸의 정보를 저장 중 입니다.");
+		System.out.println("딸 아이의 정보를 저장 중 입니다.");
 		sleep(1500);
 		FileMgr.saveText(
 				savePath, prin.getSaveData() 
@@ -116,7 +116,7 @@ public class Main {
 	
 	public static void load(){
 		HashMap<String, String> map = FileMgr.toMap(FileMgr.loadText(savePath));
-		System.out.println("딸을 불러오고 있습니다.");
+		System.out.println("딸 아이의 세이브 파일을 불러오고 있습니다.");
 		Ani.printTyping("↓↙←←←", 250);
 		System.out.println();
 		prin = new Princess(map);
@@ -158,11 +158,11 @@ public class Main {
 		// 전체적인 게임스토리 : 딸아이를 키워 결혼까지 시키기 엔딩크레딧-
 		System.out.println("오프닝을 보시겠습니까? 1.네 2.아니오");
 		if (sc.nextInt() == 1) openning();
-		Ani.printTyping("우리는 대학교 cc로 만나 5년간의 연애 끝에\n결혼을 하고 예쁜 딸 아이를 낳고 부인은 생을마감했다.\n나에게 남겨진 딸 아이.. 난 꼭 이 아이를 잘 키워볼 것이야!!");
+		Ani.printTyping("우리는 대학교 cc로 만나 5년간의 연애 끝에 결혼을 했다.\n하지만,\n그 행복도 잠시...\n예쁜 딸 아이를 낳고 부인은 생을마감했다.\n나에게 남겨진 딸 아이..\n난 꼭 이 아이를 잘 키워볼 것이야!!");
 		sleep(1000);
-		System.out.print("아이의 이름이 뭔가요? ");
+		System.out.print("아이의 이름을 지어주세요. ");
 		prin.setStat(StatIdx.NAME, sc.next());
-		System.out.print("아이의 피부는 어떤색 인가요? " + prin.getSkinColorNameList());
+		System.out.print("아이의 피부색을 정해주세요. " + prin.getSkinColorNameList());
 		prin.setStat(StatIdx.SKINCOLOR, sc.next());
 		int tmpCount = (int) (Math.random() * 5) + 3;
 		while (tmpCount-- > 0) {
@@ -171,7 +171,7 @@ public class Main {
 		}
 		System.out.println("! ");
 		sleep(1500);
-		System.out.println("딸이 태어났습니다!");
+		System.out.println("딸 아이를 잘 키워 주세요.");
 		sleep(1000);
 		prin.printStatAll();
 		
