@@ -178,11 +178,25 @@ public class Princess implements StatIdx, ActionIdx, SentIdx{
 	
 	public void startAction(int idx) {
 		
-		int rndFeel = (int)(Math.random() * getStatDbl(FEEL));
-		if (rndFeel < 20) { 
-			Ani.printTyping("▼ " + getStatStr(NAME) + "의 기분이 좋지 않습니다. ▼");
-			Ani.printTyping(SentMgr.getRebRndSent());
-			idx = ALCOHOL; 
+		double feelValue = getStatDbl(FEEL);
+		int rndFeel = (int)(Math.random() * feelValue);
+		if (feelValue < 30) {
+			if (rndFeel < 20) {
+				Ani.printTyping("▼ " + getStatStr(NAME) + "의 기분이 좋지 않습니다. ▼");
+				Ani.printTyping(SentMgr.getRebRndSent());
+			}
+			
+			double ageValue = getStatDbl(AGE);
+			
+			if (ageValue < 17) {
+				int rnd = (int)(Math.random() * 2);
+				if (rnd == 0)
+					idx = WALK; 
+				else
+					idx = NAP;
+			} else if (ageValue >= 17) {
+				idx = ALCOHOL;
+			}
 		}
 		
 		Ani.printTyping("...☞ " + actionList[idx][0], 500);
@@ -274,6 +288,7 @@ public class Princess implements StatIdx, ActionIdx, SentIdx{
 				addStat(FATIGUE, +20);
 				addStat(INTELLECT, +10);
 				addStat(VISION, -0.01);
+				addStat(FEEL, -10);
 				timePass(5);
 				endMsgPrint("피곤해");
 			break;
@@ -282,6 +297,7 @@ public class Princess implements StatIdx, ActionIdx, SentIdx{
 				startMsgPrint("학교 가기 싫다.");
 				addStat(FATIGUE, +40);
 				addStat(INTELLECT, +5);
+				addStat(FEEL, -10);
 				timePass(8);
 				endMsgPrint("피곤해");
 			break;
@@ -290,7 +306,7 @@ public class Princess implements StatIdx, ActionIdx, SentIdx{
 				startMsgPrint("학원 가기 싫다.");
 				addStat(FATIGUE, +20);
 				addStat(INTELLECT, +3);
-				addStat(FEEL, -10);
+				addStat(FEEL, -20);
 				timePass(4);
 				endMsgPrint("피곤해");
 			break;
